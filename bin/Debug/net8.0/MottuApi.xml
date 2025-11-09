@@ -1,0 +1,1073 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MottuApi</name>
+    </assembly>
+    <members>
+        <member name="M:MottuApi.Controllers.ClientesController.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Retorna uma lista paginada de clientes.
+            </summary>
+            <param name="pageNumber">O número da página (padrão: 1).</param>
+            <param name="pageSize">O tamanho da página (padrão: 10).</param>
+            <response code="200">Retorna a lista paginada de clientes.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.ClientesController.GetById(System.Int32)">
+            <summary>
+            Busca um cliente específico pelo seu ID.
+            </summary>
+            <param name="id">O ID do cliente.</param>
+            <response code="200">Retorna os dados do cliente encontrado.</response>
+            <response code="404">Se o cliente com o ID especificado não for encontrado.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.ClientesController.Create(MottuApi.DTOs.ClienteDtos.CreateClienteDto)">
+            <summary>
+            Cadastra um novo cliente.
+            </summary>
+            <param name="createDto">Os dados do cliente a ser criado.</param>
+            <response code="201">Retorna os dados do cliente recém-criado.</response>
+            <response code="400">Se os dados fornecidos forem inválidos (ex: CPF/CNH duplicado, menor de idade).</response>
+        </member>
+        <member name="M:MottuApi.Controllers.ClientesController.Update(System.Int32,MottuApi.DTOs.ClienteDtos.UpdateClienteDto)">
+            <summary>
+            Atualiza o nome de um cliente existente.
+            </summary>
+            <param name="id">O ID do cliente a ser atualizado.</param>
+            <param name="updateDto">Os novos dados do cliente.</param>
+            <response code="204">Se o cliente foi atualizado com sucesso.</response>
+            <response code="400">Se a atualização for inválida (ex: cliente com locação ativa).</response>
+            <response code="404">Se o cliente não for encontrado.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.ClientesController.Delete(System.Int32)">
+            <summary>
+            Remove um cliente.
+            </summary>
+            <param name="id">O ID do cliente a ser removido.</param>
+            <response code="204">Se o cliente foi removido com sucesso.</response>
+            <response code="400">Se a remoção for inválida (ex: cliente com locação ativa).</response>
+            <response code="404">Se o cliente não for encontrado.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.ClientesController.EstimarRisco(MottuApi.DTOs.ClienteDtos.EstimarRiscoDto)">
+            <summary>
+            Estima o risco de um cliente baseado na idade e tipo de CNH usando Machine Learning.
+            </summary>
+            <param name="dto">Dados do cliente para estimativa (idade e tipo de CNH).</param>
+            <response code="200">Retorna a estimativa de risco (Alto ou Baixo).</response>
+            <response code="400">Se os dados fornecidos forem inválidos.</response>
+        </member>
+        <member name="T:MottuApi.Controllers.FinalizarLocacaoDto">
+            <summary>
+            DTO auxiliar para receber a data de devolução.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Controllers.LocacoesController.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Retorna uma lista paginada de locações.
+            </summary>
+            <response code="200">Retorna a lista paginada de locações.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.LocacoesController.GetById(System.Int32)">
+            <summary>
+            Busca uma locação específica pelo seu ID.
+            </summary>
+            <param name="id">O ID da locação.</param>
+            <response code="200">Retorna os dados da locação encontrada.</response>
+            <response code="404">Se a locação não for encontrada.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.LocacoesController.Create(MottuApi.DTOs.LocacaoDtos.CreateLocacaoDto)">
+            <summary>
+            Inicia uma nova locação de moto para um cliente.
+            </summary>
+            <param name="createDto">Dados para a locação (ID do cliente e data final prevista).</param>
+            <response code="201">Retorna os dados da locação recém-criada.</response>
+            <response code="400">Se a locação for inválida (ex: cliente inelegível, sem motos disponíveis).</response>
+            <response code="404">Se o cliente especificado não for encontrado.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.LocacoesController.Finalizar(System.Int32,MottuApi.Controllers.FinalizarLocacaoDto)">
+            <summary>
+            Finaliza uma locação ativa, calculando o custo total.
+            </summary>
+            <param name="id">O ID da locação a ser finalizada.</param>
+            <param name="finalizarDto">Objeto contendo a data de devolução.</param>
+            <response code="200">Retorna a locação atualizada com o valor total.</response>
+            <response code="400">Se a finalização for inválida (ex: locação já finalizada).</response>
+            <response code="404">Se a locação não for encontrada.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.LocacoesController.Delete(System.Int32)">
+            <summary>
+            Remove uma locação (operação administrativa).
+            </summary>
+            <param name="id">O ID da locação a ser removida.</param>
+            <response code="204">Se a locação foi removida com sucesso.</response>
+            <response code="400">Se a locação estiver ativa.</response>
+            <response code="404">Se a locação não for encontrada.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.MotosController.GetAll(System.Int32,System.Int32)">
+            <summary>
+            Retorna uma lista paginada de motos.
+            </summary>
+            <param name="pageNumber">O número da página (padrão: 1).</param>
+            <param name="pageSize">O tamanho da página (padrão: 10).</param>
+            <response code="200">Retorna a lista paginada de motos.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.MotosController.GetById(System.Int32)">
+            <summary>
+            Busca uma moto específica pelo seu ID.
+            </summary>
+            <param name="id">O ID da moto.</param>
+            <response code="200">Retorna os dados da moto encontrada.</response>
+            <response code="404">Se a moto com o ID especificado não for encontrada.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.MotosController.Create(MottuApi.DTOs.MotoDtos.CreateMotoDto)">
+            <summary>
+            Cadastra uma nova moto.
+            </summary>
+            <param name="createDto">Os dados da moto a ser criada.</param>
+            <response code="201">Retorna os dados da moto recém-criada.</response>
+            <response code="400">Se os dados fornecidos forem inválidos (ex: placa já existe).</response>
+        </member>
+        <member name="M:MottuApi.Controllers.MotosController.Update(System.Int32,MottuApi.DTOs.MotoDtos.UpdateMotoDto)">
+            <summary>
+            Atualiza os dados de uma moto existente.
+            </summary>
+            <param name="id">O ID da moto a ser atualizada.</param>
+            <param name="updateDto">Os novos dados da moto.</param>
+            <response code="204">Se a moto foi atualizada com sucesso.</response>
+            <response code="400">Se a atualização for inválida (ex: tentar alterar moto alugada).</response>
+            <response code="404">Se a moto não for encontrada.</response>
+        </member>
+        <member name="M:MottuApi.Controllers.MotosController.Delete(System.Int32)">
+            <summary>
+            Remove uma moto.
+            </summary>
+            <param name="id">O ID da moto a ser removida.</param>
+            <response code="204">Se a moto foi removida com sucesso.</response>
+            <response code="400">Se a remoção for inválida (ex: tentar remover moto alugada).</response>
+            <response code="404">Se a moto não for encontrada.</response>
+        </member>
+        <member name="T:MottuApi.Core.Entities.TipoCNH">
+            <summary>
+            Enum para os tipos de CNH (Carteira Nacional de Habilitação).
+            Apenas CNH do tipo 'A' ou 'AB' pode alugar motos.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Entities.Cliente">
+            <summary>
+            Representa a entidade Cliente, a pessoa que aluga as motos.
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Cliente.Id">
+            <summary>
+            Identificador único do cliente.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Cliente.Nome">
+            <summary>
+            Nome completo do cliente.
+            </summary>
+            <example>João da Silva</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Cliente.Cpf">
+            <summary>
+            CPF do cliente (Cadastro de Pessoas Físicas), deve ser único.
+            </summary>
+            <example>123.456.789-00</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Cliente.DataNascimento">
+            <summary>
+            Data de nascimento do cliente. Usado para verificar a maioridade.
+            </summary>
+            <example>1990-05-20</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Cliente.NumeroCNH">
+            <summary>
+            Número da CNH (Carteira Nacional de Habilitação) do cliente.
+            </summary>
+            <example>98765432100</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Cliente.TipoCNH">
+            <summary>
+            Tipo da CNH do cliente (A, B ou AB).
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Entities.StatusLocacao">
+            <summary>
+            Enum para representar o status da locação.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Entities.Locacao">
+            <summary>
+            Representa a transação de locação de uma moto por um cliente.
+            É a entidade central que conecta as demais.
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.Id">
+            <summary>
+            Identificador único da locação.
+            </summary>
+            <example>5001</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.DataInicio">
+            <summary>
+            Data e hora de início da locação.
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.DataFimPrevista">
+            <summary>
+            Data e hora prevista para o término da locação.
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.DataFimReal">
+            <summary>
+            Data e hora em que a moto foi efetivamente devolvida.
+            Permite nulo, pois uma locação ativa ainda não tem data de devolução.
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.ValorDiaria">
+            <summary>
+            Valor da diária da locação no momento da contratação.
+            </summary>
+            <example>50.00</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.ValorTotal">
+            <summary>
+            Valor total pago. Será calculado no momento da devolução.
+            </summary>
+            <example>350.00</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.Status">
+            <summary>
+            Status atual da locação (Ativa ou Concluída).
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.ClienteId">
+            <summary>
+            ID do cliente que realizou a locação (Chave Estrangeira).
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Locacao.MotoId">
+            <summary>
+            ID da moto que foi alugada (Chave Estrangeira).
+            </summary>
+            <example>101</example>
+        </member>
+        <member name="T:MottuApi.Core.Entities.MotoStatus">
+            <summary>
+            Enum para representar o status de uma moto de forma segura.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Entities.Moto">
+            <summary>
+            Representa a entidade Moto, que é o principal ativo da empresa.
+            </summary>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Moto.Id">
+            <summary>
+            Identificador único da moto no banco de dados.
+            </summary>
+            <example>101</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Moto.Ano">
+            <summary>
+            Ano de fabricação da moto.
+            </summary>
+            <example>2024</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Moto.Modelo">
+            <summary>
+            Modelo da moto.
+            </summary>
+            <example>Honda Pop 110i</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Moto.Placa">
+            <summary>
+            Placa de identificação da moto (deve ser única).
+            </summary>
+            <example>XYZ-1234</example>
+        </member>
+        <member name="P:MottuApi.Core.Entities.Moto.Status">
+            <summary>
+            Status atual da moto, indicando se está disponível para locação.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.IClienteRepository">
+            <summary>
+            Define o contrato para o repositório da entidade Cliente.
+            Abstrai as operações de acesso a dados para os clientes.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            Busca um cliente de forma assíncrona pelo seu ID.
+            </summary>
+            <param name="id">O ID do cliente a ser procurado.</param>
+            <returns>A entidade Cliente correspondente ao ID, ou nulo se não for encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.GetAllPaginatedAsync(System.Int32,System.Int32)">
+            <summary>
+            Retorna todos os clientes de forma paginada.
+            </summary>
+            <param name="pageNumber">O número da página a ser retornada.</param>
+            <param name="pageSize">A quantidade de itens por página.</param>
+            <returns>Uma coleção enumerável de clientes.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.GetByCpfAsync(System.String)">
+            <summary>
+            Busca um cliente pelo seu CPF, que deve ser único.
+            </summary>
+            <param name="cpf">O CPF do cliente a ser procurado.</param>
+            <returns>A entidade Cliente correspondente ao CPF, ou nulo se não for encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.GetByCnhAsync(System.String)">
+            <summary>
+            Busca um cliente pelo número da sua CNH, que deve ser único.
+            </summary>
+            <param name="cnh">O número da CNH do cliente a ser procurado.</param>
+            <returns>A entidade Cliente correspondente à CNH, ou nulo se não for encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.AddAsync(MottuApi.Core.Entities.Cliente)">
+            <summary>
+            Adiciona um novo cliente ao repositório.
+            </summary>
+            <param name="cliente">A entidade Cliente a ser adicionada.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.Update(MottuApi.Core.Entities.Cliente)">
+            <summary>
+            Marca uma entidade Cliente como modificada.
+            </summary>
+            <param name="cliente">A entidade Cliente a ser atualizada.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.Delete(MottuApi.Core.Entities.Cliente)">
+            <summary>
+            Marca uma entidade Cliente para remoção.
+            </summary>
+            <param name="cliente">A entidade Cliente a ser removida.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteRepository.GetCountAsync">
+            <summary>
+            Retorna a contagem total de clientes.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.IClienteService">
+            <summary>
+            Define o contrato para o serviço de Clientes.
+            Contém a lógica de negócio para gerenciar os clientes do sistema.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteService.GetByIdAsync(System.Int32)">
+            <summary>
+            Busca e retorna um cliente pelo seu ID.
+            </summary>
+            <param name="id">ID do cliente.</param>
+            <returns>Um DTO com os dados do cliente, ou nulo se não encontrado.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Busca e retorna uma lista paginada de todos os clientes.
+            </summary>
+            <param name="pageNumber">Número da página.</param>
+            <param name="pageSize">Tamanho da página.</param>
+            <returns>Um resultado paginado contendo os DTOs dos clientes.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteService.CreateAsync(MottuApi.DTOs.ClienteDtos.CreateClienteDto)">
+            <summary>
+            Valida e cria um novo cliente no sistema. Irá verificar se o CPF e CNH já existem.
+            </summary>
+            <param name="createClienteDto">DTO com os dados para a criação do cliente.</param>
+            <returns>Um DTO do cliente recém-criado.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteService.UpdateAsync(System.Int32,MottuApi.DTOs.ClienteDtos.UpdateClienteDto)">
+            <summary>
+            Valida e atualiza os dados de um cliente existente (exceto CNH).
+            </summary>
+            <param name="id">ID do cliente a ser atualizado.</param>
+            <param name="updateClienteDto">DTO com os dados a serem atualizados.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IClienteService.DeleteAsync(System.Int32)">
+            <summary>
+            Valida e remove um cliente do sistema.
+            </summary>
+            <param name="id">ID do cliente a ser removido.</param>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.ILocacaoRepository">
+            <summary>
+            Define o contrato para o repositório da entidade Locacao.
+            Abstrai as operações de acesso a dados para as transações de locação.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            Busca uma locação de forma assíncrona pelo seu ID.
+            </summary>
+            <param name="id">O ID da locação a ser procurada.</param>
+            <returns>A entidade Locacao correspondente ao ID, ou nulo se não for encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoRepository.GetAllPaginatedAsync(System.Int32,System.Int32)">
+            <summary>
+            Retorna todas as locações de forma paginada.
+            </summary>
+            <param name="pageNumber">O número da página a ser retornada.</param>
+            <param name="pageSize">A quantidade de itens por página.</param>
+            <returns>Uma coleção enumerável de locações.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoRepository.GetActiveLocacaoByClienteIdAsync(System.Int32)">
+            <summary>
+            Busca uma locação ativa para um cliente específico.
+            Útil para validar se o cliente já possui uma locação em andamento.
+            </summary>
+            <param name="clienteId">O ID do cliente.</param>
+            <returns>A locação ativa do cliente, ou nulo se não houver.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoRepository.AddAsync(MottuApi.Core.Entities.Locacao)">
+            <summary>
+            Adiciona uma nova locação ao repositório.
+            </summary>
+            <param name="locacao">A entidade Locacao a ser adicionada.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoRepository.Update(MottuApi.Core.Entities.Locacao)">
+            <summary>
+            Marca uma entidade Locacao como modificada.
+            </summary>
+            <param name="locacao">A entidade Locacao a ser atualizada.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoRepository.Delete(MottuApi.Core.Entities.Locacao)">
+            <summary>
+            Marca uma entidade Locacao para remoção.
+            </summary>
+            <param name="locacao">A entidade Locacao a ser removida.</param>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.ILocacaoService">
+            <summary>
+            Define o contrato para o serviço de Locações.
+            Contém a lógica de negócio para o aluguel e devolução de motos,
+            orquestrando os repositórios de Locacao, Moto e Cliente.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoService.GetByIdAsync(System.Int32)">
+            <summary>
+            Busca e retorna uma locação pelo seu ID.
+            </summary>
+            <param name="id">ID da locação.</param>
+            <returns>Um DTO com os dados da locação, ou nulo se não encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Busca e retorna uma lista paginada de todas as locações.
+            </summary>
+            <param name="pageNumber">Número da página.</param>
+            <param name="pageSize">Tamanho da página.</param>
+            <returns>Um resultado paginado contendo os DTOs das locações.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoService.CreateAsync(MottuApi.DTOs.LocacaoDtos.CreateLocacaoDto)">
+            <summary>
+            Cria uma nova locação para um cliente.
+            A lógica inclui encontrar uma moto disponível, validar se o cliente pode alugar e registrar a transação.
+            </summary>
+            <param name="createLocacaoDto">DTO com os dados para a criação da locação.</param>
+            <returns>Um DTO da locação recém-criada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoService.EndLocacaoAsync(System.Int32,System.DateTime)">
+            <summary>
+            Finaliza uma locação ativa.
+            A lógica inclui o cálculo do valor total com base na data de devolução e na diária contratada.
+            </summary>
+            <param name="locacaoId">O ID da locação a ser finalizada.</param>
+            <param name="dataDevolucao">A data em que a moto foi devolvida.</param>
+            <returns>Um DTO da locação atualizada com o valor total calculado.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.ILocacaoService.DeleteAsync(System.Int32)">
+            <summary>
+            Remove uma locação do sistema (operação administrativa).
+            </summary>
+            <param name="id">ID da locação a ser removida.</param>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.IMotoRepository">
+            <summary>
+            Define o contrato para o repositório da entidade Moto.
+            Esta interface abstrai as operações de acesso a dados para as motos,
+            permitindo que a lógica de negócio não dependa diretamente do Entity Framework ou de qualquer outra tecnologia de banco de dados.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            Busca uma moto de forma assíncrona pelo seu ID.
+            </summary>
+            <param name="id">O ID da moto a ser procurada.</param>
+            <returns>A entidade Moto correspondente ao ID, ou nulo se não for encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.GetAllPaginatedAsync(System.Int32,System.Int32)">
+            <summary>
+            Retorna todas as motos de forma paginada.
+            </summary>
+            <param name="pageNumber">O número da página a ser retornada.</param>
+            <param name="pageSize">A quantidade de itens por página.</param>
+            <returns>Uma coleção enumerável de motos.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.GetByPlacaAsync(System.String)">
+            <summary>
+            Busca uma moto pela sua placa, que deve ser única.
+            </summary>
+            <param name="placa">A placa da moto a ser procurada.</param>
+            <returns>A entidade Moto correspondente à placa, ou nulo se não for encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.AddAsync(MottuApi.Core.Entities.Moto)">
+            <summary>
+            Adiciona uma nova moto ao repositório.
+            </summary>
+            <param name="moto">A entidade Moto a ser adicionada.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.Update(MottuApi.Core.Entities.Moto)">
+            <summary>
+            Marca uma entidade Moto como modificada.
+            A alteração será persistida no banco de dados quando SaveChangesAsync for chamado.
+            </summary>
+            <param name="moto">A entidade Moto a ser atualizada.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.Delete(MottuApi.Core.Entities.Moto)">
+            <summary>
+            Marca uma entidade Moto para remoção.
+            A remoção será efetivada no banco de dados quando SaveChangesAsync for chamado.
+            </summary>
+            <param name="moto">A entidade Moto a ser removida.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoRepository.GetCountAsync">
+            <summary>
+            Retorna a contagem total de motos.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.IMotoService">
+            <summary>
+            Define o contrato para o serviço de Motos.
+            Esta interface contém a lógica de negócio e orquestra as operações
+            relacionadas a motos, utilizando o repositório correspondente.
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoService.GetByIdAsync(System.Int32)">
+            <summary>
+            Busca e retorna uma moto pelo seu ID.
+            </summary>
+            <param name="id">ID da moto.</param>
+            <returns>Um DTO com os dados da moto, ou nulo se não encontrada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoService.GetAllAsync(System.Int32,System.Int32)">
+            <summary>
+            Busca e retorna uma lista paginada de todas as motos.
+            </summary>
+            <param name="pageNumber">Número da página.</param>
+            <param name="pageSize">Tamanho da página.</param>
+            <returns>Um resultado paginado contendo os DTOs das motos.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoService.CreateAsync(MottuApi.DTOs.MotoDtos.CreateMotoDto)">
+            <summary>
+            Valida e cria uma nova moto no sistema.
+            </summary>
+            <param name="createMotoDto">DTO com os dados para a criação da moto.</param>
+            <returns>Um DTO da moto recém-criada.</returns>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoService.UpdateAsync(System.Int32,MottuApi.DTOs.MotoDtos.UpdateMotoDto)">
+            <summary>
+            Valida e atualiza uma moto existente.
+            </summary>
+            <param name="id">ID da moto a ser atualizada.</param>
+            <param name="updateMotoDto">DTO com os dados a serem atualizados.</param>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IMotoService.DeleteAsync(System.Int32)">
+            <summary>
+            Valida e remove uma moto do sistema.
+            </summary>
+            <param name="id">ID da moto a ser removida.</param>
+        </member>
+        <member name="T:MottuApi.Core.Interfaces.IPredictionService">
+            <summary>
+            Interface para o serviço de predição de risco de clientes usando ML.NET
+            </summary>
+        </member>
+        <member name="M:MottuApi.Core.Interfaces.IPredictionService.EstimarRisco(System.Int32,System.String)">
+            <summary>
+            Estima o risco de um cliente baseado na idade e tipo de CNH
+            </summary>
+            <param name="idade">Idade do cliente</param>
+            <param name="tipoCNH">Tipo da CNH (A, B, AB)</param>
+            <returns>Retorna "Alto" ou "Baixo" indicando o nível de risco</returns>
+        </member>
+        <member name="T:MottuApi.Data.DataSeeder">
+            <summary>
+            Classe responsável por popular o banco de dados com dados iniciais (seed data).
+            </summary>
+        </member>
+        <member name="M:MottuApi.Data.DataSeeder.SeedAsync(MottuApi.Data.AppDbContext)">
+            <summary>
+            Popula o banco de dados com dados iniciais se as tabelas estiverem vazias.
+            </summary>
+        </member>
+        <member name="T:MottuApi.DTOs.ClienteDtos.CreateClienteDto">
+            <summary>
+            DTO para receber os dados necessários para a criação de um novo cliente.
+            Este é o objeto esperado no corpo de requisições POST para /clientes.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.CreateClienteDto.Nome">
+            <summary>
+            Nome completo do cliente.
+            </summary>
+            <example>Carlos Pereira</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.CreateClienteDto.Cpf">
+            <summary>
+            CPF do cliente (somente números).
+            </summary>
+            <example>12345678900</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.CreateClienteDto.DataNascimento">
+            <summary>
+            Data de nascimento do cliente. A idade mínima será validada pela lógica de negócio.
+            </summary>
+            <example>1992-11-30</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.CreateClienteDto.NumeroCNH">
+            <summary>
+            Número da CNH do cliente.
+            </summary>
+            <example>98765432100</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.CreateClienteDto.TipoCNH">
+            <summary>
+            Tipo da CNH do cliente. Valores válidos: "A", "B", "AB".
+            </summary>
+            <example>A</example>
+        </member>
+        <member name="T:MottuApi.DTOs.ClienteDtos.EstimarRiscoDto">
+            <summary>
+            DTO para estimar o risco de um cliente
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.EstimarRiscoDto.Idade">
+            <summary>
+            Idade do cliente
+            </summary>
+            <example>25</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.EstimarRiscoDto.TipoCNH">
+            <summary>
+            Tipo da CNH (A, B, AB)
+            </summary>
+            <example>A</example>
+        </member>
+        <member name="T:MottuApi.DTOs.ClienteDtos.RiscoEstimadoDto">
+            <summary>
+            DTO de resposta com a estimativa de risco
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.RiscoEstimadoDto.Risco">
+            <summary>
+            Nível de risco estimado (Alto ou Baixo)
+            </summary>
+            <example>Baixo</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.RiscoEstimadoDto.Idade">
+            <summary>
+            Idade do cliente analisado
+            </summary>
+            <example>25</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.RiscoEstimadoDto.TipoCNH">
+            <summary>
+            Tipo de CNH analisado
+            </summary>
+            <example>A</example>
+        </member>
+        <member name="T:MottuApi.DTOs.ClienteDtos.ReadClienteDto">
+            <summary>
+            DTO para a leitura e retorno de dados de um cliente.
+            Este é o objeto que será retornado nos endpoints GET.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.Id">
+            <summary>
+            Identificador único do cliente.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.Nome">
+            <summary>
+            Nome completo do cliente.
+            </summary>
+            <example>Maria Souza</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.Cpf">
+            <summary>
+            CPF do cliente (Cadastro de Pessoas Físicas).
+            </summary>
+            <example>123.456.789-00</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.DataNascimento">
+            <summary>
+            Data de nascimento do cliente.
+            </summary>
+            <example>1995-08-15</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.NumeroCNH">
+            <summary>
+            Número da CNH (Carteira Nacional de Habilitação) do cliente.
+            </summary>
+            <example>98765432100</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.TipoCNH">
+            <summary>
+            Tipo da CNH do cliente (A, B ou AB).
+            </summary>
+            <example>A</example>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.ReadClienteDto.Links">
+            <summary>
+            Lista de links HATEOAS relacionados ao cliente.
+            </summary>
+        </member>
+        <member name="T:MottuApi.DTOs.ClienteDtos.UpdateClienteDto">
+            <summary>
+            DTO para receber os dados necessários para a atualização de um cliente.
+            Note que apenas o nome pode ser alterado. Outros dados como CPF e CNH
+            são considerados imutáveis após o cadastro.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.ClienteDtos.UpdateClienteDto.Nome">
+            <summary>
+            Nome completo do cliente.
+            </summary>
+            <example>Maria Souza Santos</example>
+        </member>
+        <member name="T:MottuApi.DTOs.LocacaoDtos.CreateLocacaoDto">
+            <summary>
+            DTO para receber os dados necessários para a criação de uma nova locação.
+            O cliente informa quem ele é e a data de devolução desejada. O sistema
+            se encarrega de alocar uma moto disponível e registrar a transação.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.CreateLocacaoDto.ClienteId">
+            <summary>
+            ID do cliente que está realizando a locação.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.CreateLocacaoDto.DataFimPrevista">
+            <summary>
+            Data e hora prevista para o término da locação.
+            Esta data deve ser futura em relação à data de início.
+            </summary>
+            <example>2025-10-01T10:00:00Z</example>
+        </member>
+        <member name="T:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto">
+            <summary>
+            DTO para a leitura e retorno de dados de uma locação.
+            Retorna um resumo com os dados principais da transação e dos envolvidos.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.Id">
+            <summary>
+            Identificador único da locação.
+            </summary>
+            <example>5001</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.DataInicio">
+            <summary>
+            Data e hora de início da locação.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.DataFimPrevista">
+            <summary>
+            Data e hora prevista para o término da locação.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.DataFimReal">
+            <summary>
+            Data e hora em que a moto foi devolvida. Será nulo se a locação ainda estiver ativa.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.ValorDiaria">
+            <summary>
+            Valor da diária da locação.
+            </summary>
+            <example>50.00</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.ValorTotal">
+            <summary>
+            Valor total pago. Será nulo até a devolução e cálculo final.
+            </summary>
+            <example>350.00</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.Status">
+            <summary>
+            Status atual da locação.
+            </summary>
+            <example>Ativa</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.ClienteId">
+            <summary>
+            ID do cliente que realizou a locação.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.NomeCliente">
+            <summary>
+            Nome do cliente que realizou a locação.
+            </summary>
+            <example>Maria Souza</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.MotoId">
+            <summary>
+            ID da moto que foi alugada.
+            </summary>
+            <example>101</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.PlacaMoto">
+            <summary>
+            Placa da moto que foi alugada.
+            </summary>
+            <example>XYZ-1234</example>
+        </member>
+        <member name="P:MottuApi.DTOs.LocacaoDtos.ReadLocacaoDto.Links">
+            <summary>
+            Lista de links HATEOAS relacionados à locação.
+            </summary>
+        </member>
+        <member name="T:MottuApi.DTOs.MotoDtos.CreateMotoDto">
+            <summary>
+            DTO para receber os dados necessários para a criação de uma nova moto.
+            Este é o objeto esperado no corpo (body) de requisições POST.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.CreateMotoDto.Ano">
+            <summary>
+            Ano de fabricação da moto. Deve ser um ano válido.
+            </summary>
+            <example>2025</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.CreateMotoDto.Modelo">
+            <summary>
+            Modelo da moto.
+            </summary>
+            <example>Honda CG 160 Titan</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.CreateMotoDto.Placa">
+            <summary>
+            Placa de identificação da moto (deve ser única).
+            </summary>
+            <example>NEW-2025</example>
+        </member>
+        <member name="T:MottuApi.DTOs.MotoDtos.ReadMotoDto">
+            <summary>
+            DTO para a leitura e retorno de dados de uma moto.
+            Este é o objeto que será serializado como JSON e retornado nos endpoints GET.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.ReadMotoDto.Id">
+            <summary>
+            Identificador único da moto.
+            </summary>
+            <example>101</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.ReadMotoDto.Ano">
+            <summary>
+            Ano de fabricação da moto.
+            </summary>
+            <example>2024</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.ReadMotoDto.Modelo">
+            <summary>
+            Modelo da moto.
+            </summary>
+            <example>Honda Pop 110i</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.ReadMotoDto.Placa">
+            <summary>
+            Placa de identificação da moto.
+            </summary>
+            <example>XYZ-1234</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.ReadMotoDto.Status">
+            <summary>
+            Status atual da moto.
+            </summary>
+            <example>Disponivel</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.ReadMotoDto.Links">
+            <summary>
+            Lista de links HATEOAS relacionados à moto.
+            </summary>
+        </member>
+        <member name="T:MottuApi.DTOs.MotoDtos.UpdateMotoDto">
+            <summary>
+            DTO para receber os dados necessários para a atualização de uma moto.
+            Este é o objeto esperado no corpo (body) de requisições PUT.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.UpdateMotoDto.Ano">
+            <summary>
+            Ano de fabricação da moto.
+            </summary>
+            <example>2025</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.UpdateMotoDto.Modelo">
+            <summary>
+            Modelo da moto.
+            </summary>
+            <example>Honda CG 160 Titan</example>
+        </member>
+        <member name="P:MottuApi.DTOs.MotoDtos.UpdateMotoDto.Status">
+            <summary>
+            Status atual da moto. Valores válidos: "Disponivel", "Alugada", "EmManutencao".
+            A lógica de negócio no serviço validará as transições de status permitidas.
+            </summary>
+            <example>EmManutencao</example>
+        </member>
+        <member name="T:MottuApi.DTOs.Shared.LinkDto">
+            <summary>
+            Representa um link HATEOAS (Hypermedia as the Engine of Application State).
+            Usado para tornar a API auto-descritiva, informando ao cliente quais ações
+            podem ser realizadas a partir do recurso atual.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.LinkDto.Href">
+            <summary>
+            O URL do link (o endpoint da ação).
+            </summary>
+            <example>/api/motos/101</example>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.LinkDto.Rel">
+            <summary>
+            A relação (relationship) do link com o recurso atual. Descreve o que o link faz.
+            </summary>
+            <example>self</example>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.LinkDto.Method">
+            <summary>
+            O método HTTP a ser usado para acessar o link.
+            </summary>
+            <example>GET</example>
+        </member>
+        <member name="M:MottuApi.DTOs.Shared.LinkDto.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Construtor para o Link HATEOAS.
+            </summary>
+            <param name="href">O URL do link.</param>
+            <param name="rel">A relação do link (ex: "self", "update-moto").</param>
+            <param name="method">O método HTTP (ex: "GET", "PUT").</param>
+        </member>
+        <member name="T:MottuApi.DTOs.Shared.PagedResult`1">
+            <summary>
+            Representa um resultado paginado para ser retornado pela API.
+            É uma classe genérica que pode conter qualquer tipo de DTO.
+            </summary>
+            <typeparam name="T">O tipo dos itens na página.</typeparam>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.PagedResult`1.Items">
+            <summary>
+            A lista de itens para a página atual.
+            </summary>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.PagedResult`1.PageNumber">
+            <summary>
+            O número da página atual.
+            </summary>
+            <example>1</example>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.PagedResult`1.PageSize">
+            <summary>
+            A quantidade de itens por página.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.PagedResult`1.TotalCount">
+            <summary>
+            A contagem total de itens em todas as páginas.
+            </summary>
+            <example>100</example>
+        </member>
+        <member name="P:MottuApi.DTOs.Shared.PagedResult`1.TotalPages">
+            <summary>
+            O número total de páginas disponíveis.
+            </summary>
+            <example>10</example>
+        </member>
+        <member name="M:MottuApi.DTOs.Shared.PagedResult`1.#ctor(System.Collections.Generic.List{`0},System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Construtor para inicializar o resultado paginado.
+            </summary>
+            <param name="items">A lista de itens da página atual.</param>
+            <param name="totalCount">A contagem total de itens.</param>
+            <param name="pageNumber">O número da página atual.</param>
+            <param name="pageSize">O tamanho da página.</param>
+        </member>
+        <member name="T:MottuApi.Infrastructure.Repositories.ClienteRepository">
+            <summary>
+            Implementação do repositório de Clientes, utilizando EF Core.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Infrastructure.Repositories.LocacaoRepository">
+            <summary>
+            Implementação do repositório de Locações, utilizando EF Core.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Infrastructure.Repositories.MotoRepository">
+            <summary>
+            Implementação do repositório de Motos.
+            Esta classe utiliza o Entity Framework Core para interagir com o banco de dados.
+            </summary>
+        </member>
+        <member name="T:MottuApi.Middleware.ApiKeyMiddleware">
+            <summary>
+            Middleware para validação de API Key via header X-API-KEY
+            </summary>
+        </member>
+        <member name="T:MottuApi.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:MottuApi.Migrations.FixOracleCaseSensitivity">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.FixOracleCaseSensitivity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.FixOracleCaseSensitivity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:MottuApi.Migrations.RecreateTablesWithUpperCase">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.RecreateTablesWithUpperCase.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.RecreateTablesWithUpperCase.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:MottuApi.Migrations.RecreateTablesWithUpperCase.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:MottuApi.Services.ClienteInput">
+            <summary>
+            Modelo de dados para entrada do ML.NET
+            </summary>
+        </member>
+        <member name="T:MottuApi.Services.ClientePrediction">
+            <summary>
+            Modelo de dados para predição
+            </summary>
+        </member>
+        <member name="T:MottuApi.Services.PredictionService">
+            <summary>
+            Serviço de predição de risco de clientes usando ML.NET
+            </summary>
+        </member>
+    </members>
+</doc>
