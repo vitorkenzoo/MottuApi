@@ -11,8 +11,8 @@ Este projeto foi construído com foco em boas práticas de desenvolvimento, util
 
 ## 👥 Integrantes
 
-- Seu Nome Completo - RM557245
-- Nome do Outro Integrante (se houver) - RA556760
+- Vitor Kenzo Mizumoto - RM557245
+- Adriano Barutti Pessuto - RM556760
 
 ---
 
